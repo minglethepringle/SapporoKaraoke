@@ -10,7 +10,11 @@
     <input id="video-url" type="text" placeholder="Enter url here"/>
     <button id="video-addtoqueue">Add to Queue</button>
     
+    <script src="https://apis.google.com/js/api.js"></script>
     <script src="./scripts/player.js"></script>
     <script src="./scripts/homepage.js"></script>
+
+    <button onclick="authenticate().then(loadClient)">authorize and load</button>
+<button onclick="execute()">execute</button>
 </body>
 </html>

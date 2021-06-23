@@ -49,7 +49,7 @@ function playemInit() {
     });
 
     // Every 30 seconds, if not playing a video, get the next one.
-    queueSearchTimer = setInterval(getNextInQueue, 30000);
+    queueSearchTimer = setInterval(getNextInQueue, 5000);
 }
 
 playemInit();

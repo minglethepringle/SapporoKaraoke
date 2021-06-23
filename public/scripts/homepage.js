@@ -1,10 +1,34 @@
-document.getElementById("video-addtoqueue").onclick = function() {
-    let url = document.getElementById("video-url").value;
-    if(url.length <= 0) {
-        alert("You must input a valid YouTube URL!");
+document.getElementById("search").onclick = function() {
+    let keyword = document.getElementById("search-keyword").value;
+    if(keyword.length <= 0) {
+        alert("You must enter something in the search bar!");
         return;
     }
+    
+    searchByKeyword(keyword, 25, (list) => {
+        let resultsBody = "";
 
+        for(let item of list) {
+            let thumbnail = item.snippet.thumbnails.high.url;
+            let title = item.snippet.title;
+            let channel = item.snippet.channelTitle;
+            let url = `https://www.youtube.com/watch?v=${item.id.videoId}`;
+            resultsBody += `
+                <tr>
+                    <td><img src="${thumbnail}" class="results-img"/></td>
+                    <td>${title}</td>
+                    <td>${channel}</td>
+                    <td><button onclick="addToQueue('${url}')">Add To Queue</button></td>
+                </tr>
+            `;
+        }
+
+        document.getElementById("results").innerHTML = resultsBody;
+
+    });
+}
+
+function addToQueue(url) {
     fetch("/addtoqueue", {
         method : "POST",
         headers: {
@@ -14,38 +38,6 @@ document.getElementById("video-addtoqueue").onclick = function() {
             url: url
         })
     }).then(() => {
-        document.getElementById("video-url").value = "";
         alert("Added video to queue!");
     });
 }
-
-function authenticate() {
-    return gapi.auth2.getAuthInstance()
-        .signIn({scope: "https://www.googleapis.com/auth/youtube.readonly"})
-        .then(function() { console.log("Sign-in successful"); },
-              function(err) { console.error("Error signing in", err); });
-  }
-  function loadClient() {
-    gapi.client.setApiKey("AIzaSyBhnISQT3jgEWZdu_RD7thslDzMPdJat_s");
-    return gapi.client.load("https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest")
-        .then(function() { console.log("GAPI client loaded for API"); },
-              function(err) { console.error("Error loading GAPI client for API", err); });
-  }
-  // Make sure the client is loaded and sign-in is complete before calling this method.
-  function execute() {
-    return gapi.client.youtube.search.list({
-      "part": [
-        "snippet"
-      ],
-      "maxResults": 25,
-      "q": "surfing"
-    })
-        .then(function(response) {
-                // Handle the results here (response.result has the parsed body).
-                console.log("Response", response);
-              },
-              function(err) { console.error("Execute error", err); });
-  }
-  gapi.load("client:auth2", function() {
-    gapi.auth2.init({client_id: "1033422400708-450uc4uaalarrtjdj7lv5g45uej5hmki.apps.googleusercontent.com"});
-  });

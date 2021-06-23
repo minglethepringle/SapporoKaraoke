@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const PORT = 3000;
-let VIDEO_QUEUE = [""];
+let VIDEO_QUEUE = [];
 
 /* QUEUE STUFF */
 function addToQueue(url) {

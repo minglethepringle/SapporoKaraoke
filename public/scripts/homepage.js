@@ -32,7 +32,7 @@ document.getElementById("search").onclick = function() {
                         <a href="${url}" target="_blank">Watch on YouTube</a>
                         </td>
                     <td>${channel}</td>
-                    <td><button onclick="addToQueue('${url}')">Add To Queue</button></td>
+                    <td><button onclick="addToQueue('${videoId}')">Add To Queue</button></td>
                 </tr>
             `;
         }
@@ -43,15 +43,32 @@ document.getElementById("search").onclick = function() {
 }
 
 function addToQueue(url) {
-    fetch("/addtoqueue", {
+    // fetch("/addtoqueue", {
+    //     method : "POST",
+    //     headers: {
+    //         "Content-Type": "application/json"
+    //     },
+    //     body : JSON.stringify({
+    //         url: url
+    //     })
+    // }).then(() => {
+    //     alert("Added video to queue!");
+    // });
+    // fetch("http://192.168.1.50:2010/WebBrowser/Command", {
+    fetch("http://173.48.191.46:51581/WebBrowser/Command", {
         method : "POST",
+        mode: "no-cors",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/x-www-form-urlencoded"
         },
-        body : JSON.stringify({
-            url: url
+        body: JSON.stringify({
+            command: "addyoutubesong",
+            limit: "mp4",
+            id: url
         })
     }).then(() => {
         alert("Added video to queue!");
+    }).catch(() => {
+        alert("Could not add video!");
     });
 }

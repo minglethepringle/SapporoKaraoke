@@ -5,8 +5,8 @@
  * @returns A Promise as a callback
  */
 export function addToQueue(id) {
-    /*return fetch("http://173.48.191.46:51581/WebBrowser/Command", {
-        method : "POST",
+    return fetch("http://173.48.191.46:51581/WebBrowser/Command", {
+        method: "POST",
         mode: "no-cors",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
@@ -14,8 +14,8 @@ export function addToQueue(id) {
         body: JSON.stringify({
             command: "addyoutubesong",
             limit: "mp4",
-            id: url
+            id: id
         })
-    });*/
-    return fetch("http://localhost:3000");
+    });
+    // return fetch("http://localhost:3000");
 }

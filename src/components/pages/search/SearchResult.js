@@ -12,15 +12,15 @@ export default function SearchResult(props) {
     function addToQueue() {
         props.setLoading(true);
         karaoke.addToQueue(videoId)
-        .then(() => {
-            makeToast("Added video \"" + title + "\" to queue successfully!", "success");
-        })
-        .catch((e) => {
-            makeToast("Something went wrong: " + e, "error");
-        })
-        .finally(() => {
-            props.setLoading(false);
-        });
+            .then(() => {
+                makeToast("Added video \"" + title + "\" to queue successfully!", "success");
+            })
+            .catch((e) => {
+                makeToast("Something went wrong: " + e, "error");
+            })
+            .finally(() => {
+                props.setLoading(false);
+            });
     }
 
     return (

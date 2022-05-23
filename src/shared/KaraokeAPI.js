@@ -5,7 +5,7 @@
  * @returns A Promise as a callback
  */
 export function addToQueue(id) {
-    return fetch("http://173.48.191.46:51581/WebBrowser/Command", {
+    return fetch("https://sapporokaraoke.pagekite.me/WebBrowser/Command", {
         method: "POST",
         mode: "no-cors",
         headers: {

@@ -12,7 +12,10 @@ export default function SearchResult(props) {
     function addToQueue() {
         props.setLoading(true);
         karaoke.addToQueue(videoId)
-            .then(() => {
+            .then((response) => {
+                if (!response.ok) {
+                    return makeToast("Something went wrong: Karaoke system is offline!", "error");
+                }
                 makeToast("Added video \"" + title + "\" to queue successfully!", "success");
             })
             .catch((e) => {

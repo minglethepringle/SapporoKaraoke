@@ -13,9 +13,9 @@ export default function SearchResult(props) {
         props.setLoading(true);
         karaoke.addToQueue(videoId)
             .then((response) => {
-                if (!response.ok) {
-                    return makeToast("Something went wrong: Karaoke system is offline!", "error");
-                }
+                // if (!response.ok) {
+                //     return makeToast("Something went wrong: Karaoke system is offline!", "error");
+                // }
                 makeToast("Added video \"" + title + "\" to queue successfully!", "success");
             })
             .catch((e) => {

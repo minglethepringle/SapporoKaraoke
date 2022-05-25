@@ -32,6 +32,11 @@ export default function SearchPage() {
             return makeToast("You must enter some text to search!", "error");
         }
 
+        // If beginning starts with http, it's a youtube link. If not, append Karaoke
+        if (searchText.substring(0, 4) != "http") {
+            searchText += " + karaoke";
+        }
+
         yt.searchByKeyword(searchText, 10, (results) => {
             if (results != null && results.length > 0) {
                 setSearchResults(results);
@@ -52,9 +57,9 @@ export default function SearchPage() {
                     <Row>
                         <Col>
                             <Form.Label as="h5">1. Search YouTube for a karaoke video</Form.Label>
-                            <Alert variant="info">
-                                <small>Tip: Include the word "<b>karaoke</b>" in your search to find karaoke versions of your wanted songs!</small>
-                            </Alert>
+                            {/* <Alert variant="warning"> */
+                                /* <small>Tip: Include the word "<b>karaoke</b>" in your search to find karaoke versions of your wanted songs!</small> */
+                            /*</Alert> */}
                             <Row>
                                 <Col>
                                     <Form.Control

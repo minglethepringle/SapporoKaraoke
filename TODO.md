@@ -1,0 +1,4 @@
+- Queue system
+- Stop previous playing video if new video clicked
+- Add automatic "+ karaoke" to search
+- Record emails + record favorites/history

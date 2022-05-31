@@ -6,12 +6,13 @@ export default function SearchResult(props) {
     let title = props.video.snippet.title;
     let channel = props.video.snippet.channelTitle;
     let videoId = props.video.id.videoId;
+    let thumbnailURL = props.video.snippet.thumbnails.high.url;
     let watchURL = `https://www.youtube.com/watch?v=${videoId}`;
     let embedURL = `https://www.youtube.com/embed/${videoId}`;
 
     function addToQueue() {
         props.setLoading(true);
-        karaoke.addToQueue(title, watchURL)
+        karaoke.addToQueue(title, watchURL, thumbnailURL)
             .then((response) => {
                 // if (!response.ok) {
                 //     return makeToast("Something went wrong: Karaoke system is offline!", "error");

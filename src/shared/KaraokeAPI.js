@@ -20,7 +20,8 @@ export function addToQueue(title, url, thumbnail) {
     return fetch("https://sapporokaraoke.loca.lt/play", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Bypass-Tunnel-Reminder": "I love you Wiwwi <3 <3 <3"
         },
         body: JSON.stringify({
             title: title,

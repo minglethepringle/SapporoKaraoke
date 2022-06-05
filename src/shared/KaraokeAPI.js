@@ -17,7 +17,7 @@ export function addToQueue(title, url, thumbnail) {
     //         id: id
     //     })
     // });
-    return fetch("https://sapporokaraoke.pagekite.me/play", {
+    return fetch("https://sapporokaraoke.loca.lt/play", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

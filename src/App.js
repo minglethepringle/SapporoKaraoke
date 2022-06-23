@@ -10,15 +10,16 @@ import { Slide, ToastContainer } from "react-toastify";
 
 function App() {
   let [showSearch, setShowSearch] = useState(false);
+  let localStorageKey = "following2";
 
   /**
    * Checks if the local storage flag of "following" is true
    * @returns true if following flag in local storage is true
    */
   function alreadyFollowing() {
-    let following = localStorage.getItem("following");
+    let following = localStorage.getItem(localStorageKey); // changed to dynamic key to reset for email collection
     if (following == null) {
-      setFollowing(true);
+      setFollowing(false);
       return false;
     }
 
@@ -31,7 +32,7 @@ function App() {
    * @param {boolean} following 
    */
   function setFollowing(following) {
-    localStorage.setItem("following", following);
+    localStorage.setItem(localStorageKey, following);
   }
 
   /**

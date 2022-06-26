@@ -17,7 +17,7 @@ export function addToQueue(title, url, thumbnail) {
     //         id: id
     //     })
     // });
-    return fetch("https://sapporokaraoke.ngrok.io/play", {
+    return fetch("https://sapporokaraoke.ddns.net:51581/play", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

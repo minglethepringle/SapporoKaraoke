@@ -15,11 +15,12 @@ export default function SearchResult(props) {
      */
     function addToQueue() {
         props.setLoading(true);
-        karaoke.addToQueue(title, watchURL, thumbnailURL)
-            .then((response) => {
-                // if (!response.ok) {
-                //     return makeToast("Something went wrong: Karaoke system is offline!", "error");
-                // }
+        karaoke.addToQueue(title, watchURL, props.karaokeEnd)
+            .then(response => response.json())
+            .then((res) => {
+                if (!res.ok) {
+                    return makeToast("Error: " + res.msg, "error");
+                }
                 makeToast("Added video \"" + title + "\" to queue successfully!", "success");
 
                 // NEW: Starts timeout

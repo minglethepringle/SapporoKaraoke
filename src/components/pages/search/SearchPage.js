@@ -63,7 +63,7 @@ export default function SearchPage(props) {
                 <>
                     <Row>
                         <Col>
-                            <Alert variant="danger"> 
+                            <Alert variant="danger">
                                 <small>Once you queue a song, you will need to <b>wait {props.karaokePrefs.timeoutMin} minutes</b> before you can select again!</small>
                             </Alert>
                             <h1 className="m-3"><u>TO SING, YOU MUST:</u></h1>
@@ -106,7 +106,10 @@ export default function SearchPage(props) {
 
                             {
                                 searchResults.map((videoResult => {
-                                    return <SearchResult video={videoResult} setLoading={setLoading} inTimeout={inTimeout} startSongTimeout={startSongTimeout} />
+                                    return (
+                                    <SearchResult video={videoResult} setLoading={setLoading}
+                                        inTimeout={inTimeout} startSongTimeout={startSongTimeout}
+                                        karaokeEnd={props.karaokePrefs.karaokeEnd} />);
                                 }))
                             }
 

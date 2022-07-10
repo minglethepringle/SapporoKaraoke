@@ -16,8 +16,8 @@ export function addToQueue(title, url, karaokeEnd) {
     //         id: id
     //     })
     // });
-    // return fetch("https://sapporokaraoke.ddns.net:51581/play", {
-    return fetch("https://localhost:5000/play", {
+    return fetch("https://sapporokaraoke.ddns.net:51581/play", {
+    // return fetch("https://localhost:5000/play", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

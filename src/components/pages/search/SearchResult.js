@@ -10,6 +10,9 @@ export default function SearchResult(props) {
     let watchURL = `https://www.youtube.com/watch?v=${videoId}`;
     let embedURL = `https://www.youtube.com/embed/${videoId}`;
 
+    /**
+     * Adds song to queue and starts song timeout
+     */
     function addToQueue() {
         props.setLoading(true);
         karaoke.addToQueue(title, watchURL, thumbnailURL)
@@ -18,6 +21,9 @@ export default function SearchResult(props) {
                 //     return makeToast("Something went wrong: Karaoke system is offline!", "error");
                 // }
                 makeToast("Added video \"" + title + "\" to queue successfully!", "success");
+
+                // NEW: Starts timeout
+                props.startSongTimeout();
             })
             .catch((e) => {
                 makeToast("Something went wrong: " + e, "error");
@@ -37,7 +43,7 @@ export default function SearchResult(props) {
             <a href={watchURL} target="_blank" className="my-3">Watch on YouTube</a>
 
             <Card.Footer>
-                <Button variant="success" onClick={addToQueue}>+ Add To Queue</Button>
+                <Button variant="success" onClick={addToQueue} disabled={props.inTimeout}>+ Add To Queue</Button>
             </Card.Footer>
         </Card>
     );

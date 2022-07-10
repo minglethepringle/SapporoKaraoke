@@ -8,11 +8,12 @@ import SearchResult from "./SearchResult";
 import makeToast from "../../../shared/MakeToast";
 
 
-export default function SearchPage() {
+export default function SearchPage(props) {
 
     let [loading, setLoading] = useState(true);
     let [searchText, setSearchText] = useState("");
     let [searchResults, setSearchResults] = useState([]);
+    let [inTimeout, setInTimeout] = useState(false);
 
     /**
      * Effect: loads the YT client. Runs once.
@@ -37,11 +38,23 @@ export default function SearchPage() {
             searchText += " + karaoke";
         }
 
-        yt.searchByKeyword(searchText, 10, (results) => {
+        yt.searchByKeyword(searchText, 8, (results) => {
             if (results != null && results.length > 0) {
                 setSearchResults(results);
             }
         });
+    }
+
+    /**
+     * Starts a timeout and disables all queue buttons until timer is up.
+     */
+    function startSongTimeout() {
+        setInTimeout(true);
+
+        // After x minutes, reenable buttons
+        setTimeout(() => {
+            setInTimeout(false);
+        }, Number(props.karaokePrefs.timeoutMin) * 1000 * 60);
     }
 
     return (
@@ -50,6 +63,9 @@ export default function SearchPage() {
                 <>
                     <Row>
                         <Col>
+                            <Alert variant="danger"> 
+                                <small>Once you queue a song, you will need to <b>wait {props.karaokePrefs.timeoutMin} minutes</b> before you can select again!</small>
+                            </Alert>
                             <h1 className="m-3"><u>TO SING, YOU MUST:</u></h1>
                         </Col>
                     </Row>
@@ -87,10 +103,10 @@ export default function SearchPage() {
                             <Alert variant="info">
                                 <small>Tip: If the video player does not load, click <b>Watch on YouTube</b> to preview the video and listen to it!</small>
                             </Alert>
-                            
+
                             {
                                 searchResults.map((videoResult => {
-                                    return <SearchResult video={videoResult} setLoading={setLoading}/>
+                                    return <SearchResult video={videoResult} setLoading={setLoading} inTimeout={inTimeout} startSongTimeout={startSongTimeout} />
                                 }))
                             }
 

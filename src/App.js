@@ -110,7 +110,7 @@ function App() {
             </main>
             :
             (showSearch) ?
-              <SearchPage /> :
+              <SearchPage karaokePrefs={karaokePrefs} /> :
               <EnterPage setShowSearch={setShowSearch} setFollowing={setFollowing} />
         }
 

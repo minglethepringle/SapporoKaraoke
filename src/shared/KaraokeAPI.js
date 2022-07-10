@@ -17,7 +17,8 @@ export function addToQueue(title, url, thumbnail) {
     //         id: id
     //     })
     // });
-    return fetch("https://sapporokaraoke.ddns.net:51581/play", {
+    // return fetch("https://sapporokaraoke.ddns.net:51581/play", {
+    return fetch("https://httpbin.org/post", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

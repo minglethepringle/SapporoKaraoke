@@ -85,8 +85,13 @@ export default function RootPage() {
         let startTime = moment(karaokePrefs.karaokeStart, "HH:mm");
         let endTime = moment(karaokePrefs.karaokeEnd, "HH:mm");
 
-        // false if out of time, true if within time
-        setKaraokeTime(!(now.isBefore(startTime) || now.isAfter(endTime)));
+        // If override option checked, show karaoke
+        if (karaokePrefs.override) {
+            setKaraokeTime(true);
+        } else {
+            // false if out of time, true if within time
+            setKaraokeTime(!(now.isBefore(startTime) || now.isAfter(endTime)));
+        }
     }
 
     return <>

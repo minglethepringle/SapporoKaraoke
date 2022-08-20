@@ -9,6 +9,9 @@ export default function ConfigPage() {
     let [karaokeStart, setKaraokeStart] = useState("");
     let [karaokeEnd, setKaraokeEnd] = useState("");
     let [timeoutMin, setTimeoutMin] = useState("");
+    let [override, setOverride] = useState(false);
+    let [systemVLC, setSystemVLC] = useState(true);
+    let [playingModeDownload, setPlayingModeDownload] = useState(false);
 
     /**
      * Effect: get karaoke preferences and check times. Runs once
@@ -22,6 +25,9 @@ export default function ConfigPage() {
                 setKaraokeStart(data.karaokeStart);
                 setKaraokeEnd(data.karaokeEnd);
                 setTimeoutMin(data.timeoutMin);
+                setOverride(data.override);
+                setSystemVLC(data.systemVLC);
+                setPlayingModeDownload(data.playingModeDownload);
             } else {
                 return makeToast("RTDB Error!", "error");
             }
@@ -52,7 +58,10 @@ export default function ConfigPage() {
         set(ref(db), {
             karaokeStart: karaokeStart,
             karaokeEnd: karaokeEnd,
-            timeoutMin: timeoutMin
+            timeoutMin: timeoutMin,
+            override: override,
+            systemVLC: systemVLC,
+            playingModeDownload: playingModeDownload
         }).then(() => {
             return makeToast("Successfully updated.", "success");
         });
@@ -89,7 +98,50 @@ export default function ConfigPage() {
                         </Form.Text>
                     </Form.Group>
 
-                    
+                    <Form.Group className="mb-3">
+                        <Form.Label>Override Start/End Time</Form.Label>
+                        <Form.Check
+                            type="checkbox"
+                            checked={override} onChange={(e) => { setOverride(e.target.checked) }}
+                        />
+                        <Form.Text className="text-muted">
+                            If enabled, karaoke will always be accessible regardless of start and end time.
+                        </Form.Text>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label>Karaoke System Selection</Form.Label>
+                        <Row>
+                            <Col className="text-end"><p><b>KSongLover</b></p></Col>
+                            <Col xs={2}>
+                                <Form.Switch
+                                    type="switch"
+                                    checked={systemVLC} onChange={(e) => { setSystemVLC(e.target.checked) }}
+                                />
+                            </Col>
+                            <Col className="text-start"><p><b>VLC (default)</b></p></Col>
+
+                        </Row>
+                    </Form.Group>
+
+                    {systemVLC ? (
+                        <Form.Group className="mb-3">
+                            <Form.Label>Song Playing Mode</Form.Label>
+                            <Row>
+                                <Col className="text-end"><p><b>Streaming (default)</b></p></Col>
+                                <Col xs={2}>
+                                    <Form.Switch
+                                        type="switch"
+                                        checked={playingModeDownload} onChange={(e) => { setPlayingModeDownload(e.target.checked) }}
+                                    />
+                                </Col>
+                                <Col className="text-start"><p><b>Download Video</b></p></Col>
+                            </Row>
+                            <Form.Text className="text-muted">
+                                ONLY APPLICABLE FOR VLC KARAOKE
+                            </Form.Text>
+                        </Form.Group>
+                    ) : <></>}
 
                     <Button variant="success" type="submit">
                         Save Changes

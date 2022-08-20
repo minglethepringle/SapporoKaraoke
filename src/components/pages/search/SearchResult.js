@@ -15,7 +15,10 @@ export default function SearchResult(props) {
      */
     function addToQueue() {
         props.setLoading(true);
-        karaoke.addToQueue(title, watchURL, props.karaokeEnd)
+        karaoke.addToQueue(title, watchURL,
+            props.karaokePrefs.karaokeEnd,
+            props.karaokePrefs.systemVLC,
+            props.karaokePrefs.playingModeDownload)
             .then(response => response.json())
             .then((res) => {
                 if (!res.ok) {

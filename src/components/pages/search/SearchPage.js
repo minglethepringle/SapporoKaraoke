@@ -3,6 +3,7 @@ import { Alert, Button, Col, Form, Image, Row } from "react-bootstrap";
 import Loading from "../../loading/Loading";
 import * as yt from "../../../shared/YoutubeAPI";
 import "./SearchPage.css";
+import trash from "../../../res/trash.svg";
 import search from "../../../res/search.svg";
 import SearchResult from "./SearchResult";
 import makeToast from "../../../shared/MakeToast";
@@ -86,8 +87,12 @@ export default function SearchPage(props) {
                                         onChange={(e) => setSearchText(e.target.value)}
                                     />
                                 </Col>
-                                <Col xs="auto">
-                                    <Button onClick={searchVideo}>
+                                <Col xs="auto" className="ps-0">
+                                    <Button onClick={() => {setSearchText("")}} variant="danger">
+                                        <Image src={trash} width="20px" />
+                                    </Button>
+                                    <span>&nbsp;</span>
+                                    <Button onClick={searchVideo} className="px-4">
                                         <Image src={search} width="20px" />
                                     </Button>
                                 </Col>
@@ -107,9 +112,9 @@ export default function SearchPage(props) {
                             {
                                 searchResults.map((videoResult => {
                                     return (
-                                    <SearchResult video={videoResult} setLoading={setLoading}
-                                        inTimeout={inTimeout} startSongTimeout={startSongTimeout}
-                                        karaokeEnd={props.karaokePrefs.karaokeEnd} />);
+                                        <SearchResult video={videoResult} setLoading={setLoading}
+                                            inTimeout={inTimeout} startSongTimeout={startSongTimeout}
+                                            karaokePrefs={props.karaokePrefs} />);
                                 }))
                             }
 

@@ -47,7 +47,7 @@ export default function SearchResult(props) {
             <a href={watchURL} target="_blank" className="my-3">Watch on YouTube</a>
 
             <Card.Footer>
-                <Button variant="success" onClick={addToQueue} disabled={props.inTimeout}>+ Add To Queue</Button>
+                <Button variant="success" onClick={addToQueue} disabled={props.inTimeout}>🎤 Sing!</Button>
             </Card.Footer>
         </Card>
     );

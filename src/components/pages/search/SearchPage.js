@@ -80,7 +80,7 @@ export default function SearchPage(props) {
                             <Row>
                                 <Col>
                                     <Form.Control
-                                        type="text"
+                                        type="search"
                                         placeholder="Search videos here"
                                         className="border border-secondary"
                                         value={searchText}
@@ -88,11 +88,7 @@ export default function SearchPage(props) {
                                     />
                                 </Col>
                                 <Col xs="auto" className="ps-0">
-                                    <Button onClick={() => {setSearchText("")}} variant="danger">
-                                        <Image src={trash} width="20px" />
-                                    </Button>
-                                    <span>&nbsp;</span>
-                                    <Button onClick={searchVideo} className="px-4">
+                                    <Button onClick={searchVideo}>
                                         <Image src={search} width="20px" />
                                     </Button>
                                 </Col>

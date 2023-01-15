@@ -19,6 +19,9 @@ export default function EnterPage(props) {
             return makeToast("You must enter your email first!", "warning");
         }
 
+        // Submit email by "submitting google form"
+        submitEmailForm(email);
+
         window.open(link, "_blank");
 
         setTimeout(() => {
@@ -26,6 +29,21 @@ export default function EnterPage(props) {
             props.setShowSearch(true);
             // alert("10 seconds")
         }, 5 * 1000);
+    }
+
+    /**
+     * Takes given email and submits google form to record to sheet
+     * @param {string} email 
+     */
+    async function submitEmailForm(email) {
+        return fetch("https://docs.google.com/forms/d/e/1FAIpQLSe8ambOzyK3oPAz11_gqJcgJwnVg0yy22zuJfrqpoeEvI_5LA/formResponse", {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+            },
+            body: `entry.1407995579=${encodeURIComponent(email)}`
+        });
     }
 
     return (
@@ -40,7 +58,7 @@ export default function EnterPage(props) {
                     <h1 className="m-3"><u>TO ENTER, YOU MUST</u></h1>
                 </Col>
             </Row>
-            <hr/>   
+            <hr />
             <Row>
                 <Col>
                     <Form.Label as="h5">1. Enter your email address</Form.Label>
@@ -53,7 +71,7 @@ export default function EnterPage(props) {
                     />
                 </Col>
             </Row>
-            <hr/>
+            <hr />
             <Row>
                 <Col>
                     <Form.Label as="h5">2. Follow us on Facebook or Instagram</Form.Label>
@@ -62,25 +80,25 @@ export default function EnterPage(props) {
             <Row>
                 <Col>
                     <Button variant="dark"
-                            className="w-100 btn-fb" onClick={() => {followPage("https://www.facebook.com/SapporoWestborough/")}}>
-                        <Image src={facebookIcon} width="20px"/> <br/>
+                        className="w-100 btn-fb" onClick={() => { followPage("https://www.facebook.com/SapporoWestborough/") }}>
+                        <Image src={facebookIcon} width="20px" /> <br />
                         <span className="mx-2">Follow on Facebook</span>
                     </Button>
                 </Col>
                 <Col>
                     <Button variant="dark"
-                            className="w-100 btn-ig" onClick={() => {followPage("https://www.instagram.com/sapporobbq/?hl=en")}}>
-                        <Image src={instagramIcon} width="20px"/> <br/>
+                        className="w-100 btn-ig" onClick={() => { followPage("https://www.instagram.com/sapporobbq/?hl=en") }}>
+                        <Image src={instagramIcon} width="20px" /> <br />
                         <span className="mx-2">Follow on Instagram</span>
                     </Button>
                 </Col>
             </Row>
-            <hr/>
+            <hr />
             <Row>
                 <Col>
                     <small className="text-secondary">By entering your email, you consent to receiving offers and news from Sapporo Restaurant.</small>
                 </Col>
             </Row>
-        </main> 
+        </main>
     );
 }

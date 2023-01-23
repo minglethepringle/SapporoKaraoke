@@ -105,7 +105,7 @@ export default function RootPage() {
                 </main>
                 :
                 (showSearch) ?
-                    <SearchPage karaokePrefs={karaokePrefs} /> :
+                    <SearchPage karaokePrefs={karaokePrefs} override={karaokePrefs.override}/> :
                     <EnterPage setShowSearch={setShowSearch} setFollowing={setFollowing} />
         }
     </>;

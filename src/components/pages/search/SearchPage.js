@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, Col, Form, Image, Row } from "react-bootstrap";
+import { Alert, Button, Col, Form, Image, Row, Dropdown } from "react-bootstrap";
 import Loading from "../../loading/Loading";
 import * as yt from "../../../shared/YoutubeAPI";
 import "./SearchPage.css";
@@ -15,6 +15,7 @@ export default function SearchPage(props) {
     let [searchText, setSearchText] = useState("");
     let [searchResults, setSearchResults] = useState([]);
     let [inTimeout, setInTimeout] = useState(false);
+    let [singHistory, setSingHistory] = useState([]); // Sing history is just a list of strings, song titles
 
     /**
      * Effect: loads the YT client. Runs once.
@@ -25,6 +26,15 @@ export default function SearchPage(props) {
         });
     }, []);
 
+    /**
+     * Effect: loads the sing history from local storage. Runs once.
+     */
+    useEffect(() => {
+        let history = localStorage.getItem("singHistory");
+        if (history != null) {
+            setSingHistory(JSON.parse(history));
+        }
+    }, []);
 
     /**
      * Searches YouTube for videos with the keyword specified by `searchText`
@@ -92,6 +102,28 @@ export default function SearchPage(props) {
                                         <Image src={search} width="20px" />
                                     </Button>
                                 </Col>
+                                <Col xs="3" className="ps-0">
+                                    <Dropdown>
+                                        <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="w-100">
+                                            History
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu>
+                                            {
+                                                singHistory.map((historyItem) => {
+                                                    return (
+                                                        <Dropdown.Item onClick={() => setSearchText(historyItem)}>
+                                                            {historyItem}
+                                                        </Dropdown.Item>
+                                                    );
+                                                })
+                                            }
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </Col>
+                            </Row>
+                            <Row>
+                                
                             </Row>
 
 
@@ -108,9 +140,12 @@ export default function SearchPage(props) {
                             {
                                 searchResults.map((videoResult => {
                                     return (
-                                        <SearchResult video={videoResult} setLoading={setLoading}
+                                        <SearchResult video={videoResult}
+                                            setLoading={setLoading}
                                             inTimeout={inTimeout} startSongTimeout={startSongTimeout}
-                                            karaokePrefs={props.karaokePrefs} />);
+                                            singHistory={singHistory} setSingHistory={setSingHistory}
+                                            karaokePrefs={props.karaokePrefs}
+                                            override={props.override}/>);
                                 }))
                             }
 

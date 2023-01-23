@@ -1,3 +1,4 @@
+import moment from "moment";
 import { Button, Card } from "react-bootstrap";
 import * as karaoke from "../../../shared/KaraokeAPI";
 import makeToast from "../../../shared/MakeToast";
@@ -18,7 +19,8 @@ export default function SearchResult(props) {
         karaoke.addToQueue(title, watchURL,
             props.karaokePrefs.karaokeEnd,
             props.karaokePrefs.systemVLC,
-            props.karaokePrefs.playingModeDownload)
+            props.karaokePrefs.playingModeDownload,
+            props.override)
             .then(response => response.json())
             .then((res) => {
                 if (!res.ok) {
@@ -28,6 +30,17 @@ export default function SearchResult(props) {
 
                 // NEW: Starts timeout
                 props.startSongTimeout();
+
+                // NEW: Adds to the front of sing history and saves to local storage
+                let history = props.singHistory;
+                history.unshift(title);
+                // If history is over 10 elements, get the first 10 elements
+                if (history.length > 10) {
+                    history = history.slice(0, 10);
+                }
+                props.setSingHistory(history);
+                localStorage.setItem("singHistory", JSON.stringify(history));
+
             })
             .catch((e) => {
                 makeToast("Something went wrong: " + e, "error");

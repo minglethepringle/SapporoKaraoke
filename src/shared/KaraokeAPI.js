@@ -1,12 +1,19 @@
+const TEST_MODE = false;
+let BASE_URL = "";
+if (TEST_MODE) {
+    BASE_URL = "https://localhost:5000";
+} else {
+    BASE_URL = "https://sapporokaraoke.ddns.net:51581";
+}
 
 /**
  * Adds a YouTube video to the karaoke queue
  * @returns A Promise as a callback
  */
-export function addToQueue(title, url, karaokeEnd, systemVLC, playingModeDownload) {
+export function addToQueue(title, url, karaokeEnd, systemVLC, playingModeDownload, override) {
     if (systemVLC) {
         // CURRENT ONE WITH NO-IP
-        return fetch("https://sapporokaraoke.ddns.net:51581/play", {
+        return fetch(`${BASE_URL}/play`, {
             // return fetch("https://localhost:5000/play", {
             method: "POST",
             headers: {
@@ -17,7 +24,8 @@ export function addToQueue(title, url, karaokeEnd, systemVLC, playingModeDownloa
                 title: title,
                 url: url,
                 karaokeEnd: karaokeEnd,
-                playingModeDownload: playingModeDownload
+                playingModeDownload: playingModeDownload,
+                override: override
             })
         });
     } else {
@@ -72,3 +80,13 @@ export function addToQueue(title, url, karaokeEnd, systemVLC, playingModeDownloa
 
     // return fetch("http://localhost:3000");
 }
+
+/**
+ * Skips the current song
+ */
+export function skipSong() {
+    return fetch(`${BASE_URL}/skip`, {
+        method: "POST"
+    });
+}
+            

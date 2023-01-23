@@ -1,6 +1,7 @@
 import { get, getDatabase, ref, set } from "firebase/database";
 import { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
+import * as karaoke from "../../../shared/KaraokeAPI";
 import firebaseApp from "../../../shared/FirebaseAPI";
 import makeToast from "../../../shared/MakeToast";
 
@@ -65,6 +66,19 @@ export default function ConfigPage() {
         }).then(() => {
             return makeToast("Successfully updated.", "success");
         });
+    }
+
+    function skipSong() {
+        // Have a confirm dialog first
+        if (window.confirm("This will skip the current song. This is an irreversible action. Are you sure?")) {
+            karaoke.skipSong()
+                .then(() => {
+                    return makeToast("Successfully skipped song.", "success");
+                }).catch((error) => {
+                    console.log(error);
+                    return makeToast("Error skipping song!", "error");
+                });           
+        }
     }
 
     return (
@@ -147,6 +161,12 @@ export default function ConfigPage() {
                         Save Changes
                     </Button>
                 </Form>
+
+                <hr/>
+
+                <Button variant="danger" type="button" onClick={skipSong}>
+                    ⏭️ Skip Current Song ⏭️
+                </Button>
             </Col>
         </Row>
     );

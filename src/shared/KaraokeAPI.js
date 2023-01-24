@@ -1,4 +1,4 @@
-const TEST_MODE = true;
+const TEST_MODE = false;
 let BASE_URL = "";
 if (TEST_MODE) {
     BASE_URL = "https://localhost:5000";

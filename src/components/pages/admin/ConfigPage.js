@@ -81,6 +81,26 @@ export default function ConfigPage() {
         }
     }
 
+    function decreaseVolume() {
+        karaoke.decreaseVolume()
+            .then(() => {
+                return makeToast("Decreased volume by 10%", "success");
+            }).catch((error) => {
+                console.log(error);
+                return makeToast("Error decreasing volume!", "error");
+            });           
+    }
+
+    function increaseVolume() {
+        karaoke.increaseVolume()
+            .then(() => {
+                return makeToast("Increased volume by 10%", "success");
+            }).catch((error) => {
+                console.log(error);
+                return makeToast("Error increasing volume!", "error");
+            });
+    }
+
     return (
         <Row>
             <Col>
@@ -164,9 +184,24 @@ export default function ConfigPage() {
 
                 <hr/>
 
-                <Button variant="danger" type="button" onClick={skipSong}>
-                    ⏭️ Skip Current Song ⏭️
-                </Button>
+                <Col xs={12} className="text-center">
+                    <Button variant="danger" type="button" onClick={skipSong} className="mx-3 my-3">
+                        ⏭️ Skip Current Song ⏭️
+                    </Button>
+                </Col>
+
+                <Row className="text-center">
+                    <Col>
+                        <Button variant="info" type="button" onClick={decreaseVolume} className="mx-3 my-3">
+                            ⬇️ Volume Down ⬇️
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button variant="success" type="button" onClick={increaseVolume} className="mx-3 my-3">
+                            ⬆️ Volume Up ⬆️
+                        </Button>
+                    </Col>
+                </Row>
             </Col>
         </Row>
     );

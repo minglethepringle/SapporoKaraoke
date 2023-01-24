@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, Col, Form, Image, Row, Dropdown } from "react-bootstrap";
+import { Alert, Button, Col, Form, Image, Row, Dropdown, Modal, ListGroup } from "react-bootstrap";
 import Loading from "../../loading/Loading";
 import * as yt from "../../../shared/YoutubeAPI";
 import "./SearchPage.css";
@@ -7,6 +7,7 @@ import trash from "../../../res/trash.svg";
 import search from "../../../res/search.svg";
 import SearchResult from "./SearchResult";
 import makeToast from "../../../shared/MakeToast";
+import * as karaoke from "../../../shared/KaraokeAPI";
 
 
 export default function SearchPage(props) {
@@ -16,6 +17,8 @@ export default function SearchPage(props) {
     let [searchResults, setSearchResults] = useState([]);
     let [inTimeout, setInTimeout] = useState(false);
     let [singHistory, setSingHistory] = useState([]); // Sing history is just a list of strings, song titles
+    let [currentQueue, setCurrentQueue] = useState([]);
+    let [showQueue, setShowQueue] = useState(false);
 
     /**
      * Effect: loads the YT client. Runs once.
@@ -68,19 +71,39 @@ export default function SearchPage(props) {
         }, Number(props.karaokePrefs.timeoutMin) * 1000 * 60);
     }
 
+    function viewQueue() {
+        karaoke.getQueue()
+            .then(res => res.json())
+            .then(data => {
+                setCurrentQueue(data.queue);
+                setShowQueue(true);
+            })
+            .catch((err) => {
+                console.log(err);
+                makeToast("Failed to retrieve queue!", "error");
+            });
+    }
+    
+    function hideQueue() {
+        setShowQueue(false);
+    }
+
     return (
         <main>
             {loading ? <Loading /> : (
                 <>
+                    <Row className="my-3">
+                        <Col>
+                            <Button variant="outline-primary w-100" onClick={viewQueue}>🎤 View Song Queue 🎤</Button>
+                        </Col>
+                    </Row>
                     <Row>
                         <Col>
                             <Alert variant="danger">
                                 <small>Once you queue a song, you will need to <b>wait {props.karaokePrefs.timeoutMin} minutes</b> before you can select again!</small>
                             </Alert>
-                            <h1 className="m-3"><u>TO SING, YOU MUST:</u></h1>
                         </Col>
                     </Row>
-                    <hr />
                     <Row>
                         <Col>
                             <Form.Label as="h5">1. Search YouTube for a karaoke video</Form.Label>
@@ -151,6 +174,31 @@ export default function SearchPage(props) {
 
                         </Col>
                     </Row>
+
+                    <Modal show={showQueue} onHide={hideQueue}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>🎤 Karaoke Song Queue</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                        <ListGroup as="ol" numbered>
+                            {
+                                currentQueue.length > 0 ? (
+                                    currentQueue.map((songTitle, i) => {
+                                        return (
+                                            <ListGroup.Item as="li" className={i == 0 ? "bg-warning" : ""}>{songTitle}</ListGroup.Item>
+                                        );
+                                    })
+                                )
+                                : <b className="text-center">No songs in queue!</b>
+                            }
+                            </ListGroup>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={hideQueue}>
+                                Close
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </>
             )}
         </main>

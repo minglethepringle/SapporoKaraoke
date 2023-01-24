@@ -1,4 +1,4 @@
-const TEST_MODE = false;
+const TEST_MODE = true;
 let BASE_URL = "";
 if (TEST_MODE) {
     BASE_URL = "https://localhost:5000";
@@ -89,4 +89,44 @@ export function skipSong() {
         method: "POST"
     });
 }
-            
+
+/**
+ * Increases volume by 10%
+ */
+export function increaseVolume() {
+    return fetch(`${BASE_URL}/volume`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            amount: +10
+        })
+    });
+}
+
+/**
+ * Decreases volume by 10%
+ */
+export function decreaseVolume() {
+    return fetch(`${BASE_URL}/volume`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            amount: -10
+        })
+    });
+}
+
+/**
+ * Retrieve the current queue
+ */
+export function getQueue() {
+    return fetch(`${BASE_URL}/queue`, {
+        method: "GET"
+    });
+}

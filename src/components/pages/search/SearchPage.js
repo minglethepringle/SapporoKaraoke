@@ -115,19 +115,21 @@ export default function SearchPage(props) {
                                     <Form.Control
                                         type="search"
                                         placeholder="Search videos here"
-                                        className="border border-secondary"
+                                        className="border border-secondary rounded-0"
                                         value={searchText}
                                         onChange={(e) => setSearchText(e.target.value)}
                                     />
                                 </Col>
-                                <Col xs="auto" className="ps-0">
-                                    <Button onClick={searchVideo}>
+                            </Row>
+                            <Row>
+                                <Col xs={6} className="pe-0">
+                                    <Button className="w-100 rounded-0" onClick={searchVideo}>
                                         <Image src={search} width="20px" />
                                     </Button>
                                 </Col>
-                                <Col xs="3" className="ps-0">
-                                    <Dropdown>
-                                        <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="w-100">
+                                <Col xs={6} className="ps-0 ">
+                                    <Dropdown className="w-100 ">
+                                        <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="w-100 rounded-0">
                                             History
                                         </Dropdown.Toggle>
 

@@ -130,7 +130,7 @@ export default function SearchPage(props) {
                                 <Col xs={6} className="ps-0 ">
                                     <Dropdown className="w-100 ">
                                         <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="w-100 rounded-0">
-                                            History
+                                            My History
                                         </Dropdown.Toggle>
 
                                         <Dropdown.Menu>

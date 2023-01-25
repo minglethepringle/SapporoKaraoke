@@ -34,9 +34,9 @@ export default function SearchResult(props) {
                 // NEW: Adds to the front of sing history and saves to local storage
                 let history = props.singHistory;
                 history.unshift(title);
-                // If history is over 10 elements, get the first 10 elements
-                if (history.length > 10) {
-                    history = history.slice(0, 10);
+                // If history is over 20 elements, get the first 20 elements
+                if (history.length > 20) {
+                    history = history.slice(0, 20);
                 }
                 props.setSingHistory(history);
                 localStorage.setItem("singHistory", JSON.stringify(history));

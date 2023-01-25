@@ -130,3 +130,35 @@ export function getQueue() {
         method: "GET"
     });
 }
+
+/**
+ * Remove song with id in queue
+ */
+export function removeSong(songId) {
+    return fetch(`${BASE_URL}/remove`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            id: songId
+        })
+    });
+}
+
+/**
+ * Play specified song next in queue
+ */
+export function playNext(songId) {
+    return fetch(`${BASE_URL}/playnext`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            id: songId
+        })
+    });
+}

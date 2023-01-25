@@ -183,15 +183,15 @@ export default function SearchPage(props) {
                         <ListGroup as="ol" numbered>
                             {
                                 currentQueue.length > 0 ? (
-                                    currentQueue.map((songTitle, i) => {
+                                    currentQueue.map((songObj, i) => {
                                         return (
-                                            <ListGroup.Item as="li" className={i == 0 ? "bg-warning" : ""}>{songTitle}</ListGroup.Item>
+                                            <ListGroup.Item as="li" className={i == 0 ? "bg-warning" : ""}>{songObj.title}</ListGroup.Item>
                                         );
                                     })
                                 )
                                 : <b className="text-center">No songs in queue!</b>
                             }
-                            </ListGroup>
+                        </ListGroup>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={hideQueue}>

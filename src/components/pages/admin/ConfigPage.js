@@ -1,6 +1,6 @@
 import { get, getDatabase, ref, set } from "firebase/database";
 import { useEffect, useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Row, ListGroup } from "react-bootstrap";
 import * as karaoke from "../../../shared/KaraokeAPI";
 import firebaseApp from "../../../shared/FirebaseAPI";
 import makeToast from "../../../shared/MakeToast";
@@ -13,6 +13,8 @@ export default function ConfigPage() {
     let [override, setOverride] = useState(false);
     let [systemVLC, setSystemVLC] = useState(true);
     let [playingModeDownload, setPlayingModeDownload] = useState(false);
+
+    let [currentQueue, setCurrentQueue] = useState([]);
 
     /**
      * Effect: get karaoke preferences and check times. Runs once
@@ -37,6 +39,27 @@ export default function ConfigPage() {
             return makeToast("RTDB Error!", "error");
         });
     }, []);
+
+    /**
+     * Start a timer to update the queue every 10 seconds
+     */
+    useEffect(() => {
+        setInterval(() => {
+            updateQueue();
+        }, 10000);
+    }, []);
+
+    function updateQueue() {
+        karaoke.getQueue()
+            .then(res => res.json())
+            .then(data => {
+                setCurrentQueue(data.queue);
+            })
+            .catch((err) => {
+                console.log(err);
+                makeToast("Failed to retrieve queue!", "error");
+            });
+    }
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -101,9 +124,85 @@ export default function ConfigPage() {
             });
     }
 
+    // Remove song with id
+    function removeSongFromQueue(songId) {
+        karaoke.removeSong(songId)
+            .then(() => {
+                makeToast("Successfully removed song.", "success");
+                updateQueue();
+            }).catch((error) => {
+                console.log(error);
+                return makeToast("Error removing song!", "error");
+            });
+    }
+
+    // Play next in queue
+    function playNext(songId) {
+        karaoke.playNext(songId)
+            .then(() => {
+                makeToast("Successfully shifted song to front of queue.", "success");
+                updateQueue();
+            }).catch((error) => {
+                console.log(error);
+                return makeToast("Error shifting song!", "error");
+            });
+    }
+
     return (
         <Row>
             <Col>
+                <h1>Media Controls</h1>
+
+                <Col xs={12} className="text-center">
+                    <Button variant="danger" type="button" onClick={skipSong} className="mx-3 my-3">
+                        ⏭️ Skip Current Song ⏭️
+                    </Button>
+                </Col>
+
+                <Row className="text-center">
+                    <Col>
+                        <Button variant="info" type="button" onClick={decreaseVolume} className="mx-3 my-3">
+                            ⬇️ Volume Down ⬇️
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button variant="success" type="button" onClick={increaseVolume} className="mx-3 my-3">
+                            ⬆️ Volume Up ⬆️
+                        </Button>
+                    </Col>
+                </Row>
+
+                <hr/>
+
+                <h1>Queue Mods</h1>
+
+                <ListGroup as="ol" numbered>
+                    {
+                        currentQueue.length > 0 ? (
+                            currentQueue.map((songObj, i) => {
+                                if (i == 0) {
+                                    return (
+                                        <ListGroup.Item as="li" className="bg-warning">{songObj.title}</ListGroup.Item>
+                                    );
+                                } else {
+                                    return (
+                                        <ListGroup.Item as="li">
+                                            <span>{songObj.title}</span>
+                                            <Button variant="secondary" type="button" className="float-end mx-1" onClick={() => {removeSongFromQueue(songObj.id)}}>❌</Button>
+                                            <Button variant="primary" type="button" className="float-end mx-1" onClick={() => {playNext(songObj.id)}}>⬆️</Button>
+                                        </ListGroup.Item>
+                                    );
+                                }
+                                
+                            })
+                        )
+                        : <b className="text-center">No songs in queue!</b>
+                    }
+                </ListGroup>
+
+                <hr/>
+
+                <h1>Configuration</h1>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
                         <Form.Label>Karaoke Start Time</Form.Label>
@@ -182,26 +281,6 @@ export default function ConfigPage() {
                     </Button>
                 </Form>
 
-                <hr/>
-
-                <Col xs={12} className="text-center">
-                    <Button variant="danger" type="button" onClick={skipSong} className="mx-3 my-3">
-                        ⏭️ Skip Current Song ⏭️
-                    </Button>
-                </Col>
-
-                <Row className="text-center">
-                    <Col>
-                        <Button variant="info" type="button" onClick={decreaseVolume} className="mx-3 my-3">
-                            ⬇️ Volume Down ⬇️
-                        </Button>
-                    </Col>
-                    <Col>
-                        <Button variant="success" type="button" onClick={increaseVolume} className="mx-3 my-3">
-                            ⬆️ Volume Up ⬆️
-                        </Button>
-                    </Col>
-                </Row>
             </Col>
         </Row>
     );

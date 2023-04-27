@@ -1,18 +1,32 @@
+let loadClientCalled = false;
+
 /**
  * Loads the YouTube API client, accessible from gapi.client.youtube
+ * @param {number} ytApiKey 1 or 2, denoting which API key to pull
  * @param {Function} callback The function called once the YouTube API is done loading
  */
-export function loadClient(callback) {
+export function loadClient(ytApiKey, callback) {
+    // Prevent loadClient from being called twice because of useEffect
+    if (loadClientCalled) {
+        return;
+    }
+
+    loadClientCalled = true;
     gapi.load("client:auth2", function () {
         gapi.auth2.init({ client_id: "1033422400708-450uc4uaalarrtjdj7lv5g45uej5hmki.apps.googleusercontent.com" });
 
-        gapi.client.setApiKey(process.env.REACT_APP_YT_API_KEY);
+        if (ytApiKey == 1) {
+            gapi.client.setApiKey(process.env.REACT_APP_YT_API_KEY_1);
+        } else if (ytApiKey == 2) {
+            gapi.client.setApiKey(process.env.REACT_APP_YT_API_KEY_2);
+        }
+        
         gapi.client.load("https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest")
             .then(() => {
                 console.log("GAPI client loaded for API");
                 callback();
             },
-                () => { console.error("Error loading GAPI client for API", err); });
+                () => { console.error("Error loading GAPI client for API"); });
     });
 }
 

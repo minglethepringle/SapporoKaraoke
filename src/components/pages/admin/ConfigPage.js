@@ -13,6 +13,7 @@ export default function ConfigPage() {
     let [override, setOverride] = useState(false);
     let [systemVLC, setSystemVLC] = useState(true);
     let [playingModeDownload, setPlayingModeDownload] = useState(false);
+    let [ytApiKey, setYtApiKey] = useState(null);
 
     let [currentQueue, setCurrentQueue] = useState([]);
 
@@ -31,6 +32,7 @@ export default function ConfigPage() {
                 setOverride(data.override);
                 setSystemVLC(data.systemVLC);
                 setPlayingModeDownload(data.playingModeDownload);
+                setYtApiKey(data.ytApiKey);
             } else {
                 return makeToast("RTDB Error!", "error");
             }
@@ -44,9 +46,12 @@ export default function ConfigPage() {
      * Start a timer to update the queue every 10 seconds
      */
     useEffect(() => {
-        setInterval(() => {
+        let queueUpdateInterval = setInterval(() => {
             updateQueue();
         }, 10000);
+        return () => {
+            clearInterval(queueUpdateInterval);
+        }
     }, []);
 
     function updateQueue() {
@@ -61,8 +66,24 @@ export default function ConfigPage() {
             });
     }
 
+    function swapYtApiKey() {
+        let nextApiKey;
+        if (ytApiKey == 1) {
+            nextApiKey = 2;
+        } else {
+            nextApiKey = 1;
+        }
+        if (window.confirm(`The current API key # is ${ytApiKey}. This will swap it to # ${nextApiKey}. Are you sure?`)) 
+        {
+            setYtApiKey(nextApiKey);
+            handleSubmit();
+        }
+    }
+
     function handleSubmit(e) {
-        e.preventDefault();
+        if (e) {
+            e.preventDefault();
+        }
 
         // Validation
         if (/^([01]\d|2[0-3]):?([0-5]\d)$/.test(karaokeStart) == false) {
@@ -85,7 +106,8 @@ export default function ConfigPage() {
             timeoutMin: timeoutMin,
             override: override,
             systemVLC: systemVLC,
-            playingModeDownload: playingModeDownload
+            playingModeDownload: playingModeDownload,
+            ytApiKey: ytApiKey
         }).then(() => {
             return makeToast("Successfully updated.", "success");
         });
@@ -151,6 +173,15 @@ export default function ConfigPage() {
     return (
         <Row>
             <Col>
+                <h1>YouTube API Key</h1>
+                <Col xs={12} className="text-center">
+                    <Button variant="primary" type="button" onClick={swapYtApiKey} className="mx-3 my-3">
+                    🔁 SWITCH YOUTUBE API KEY 🔁
+                    </Button>
+                </Col>
+
+                <hr/>
+
                 <h1>Media Controls</h1>
 
                 <Col xs={12} className="text-center">

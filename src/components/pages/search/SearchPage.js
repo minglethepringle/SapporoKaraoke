@@ -24,7 +24,7 @@ export default function SearchPage(props) {
      * Effect: loads the YT client. Runs once.
      */
     useEffect(() => {
-        yt.loadClient(() => {
+        yt.loadClient(props.karaokePrefs.ytApiKey, () => {
             setLoading(false);
         });
     }, []);

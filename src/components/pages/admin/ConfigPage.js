@@ -76,11 +76,11 @@ export default function ConfigPage() {
         if (window.confirm(`The current API key # is ${ytApiKey}. This will swap it to # ${nextApiKey}. Are you sure?`)) 
         {
             setYtApiKey(nextApiKey);
-            handleSubmit();
+            handleSubmit(null, nextApiKey);
         }
     }
 
-    function handleSubmit(e) {
+    function handleSubmit(e, nextApiKey) {
         if (e) {
             e.preventDefault();
         }
@@ -107,7 +107,7 @@ export default function ConfigPage() {
             override: override,
             systemVLC: systemVLC,
             playingModeDownload: playingModeDownload,
-            ytApiKey: ytApiKey
+            ytApiKey: nextApiKey ?? ytApiKey // either used passed in one or use state
         }).then(() => {
             return makeToast("Successfully updated.", "success");
         });

@@ -47,12 +47,19 @@ export default function SearchPage(props) {
             return makeToast("You must enter some text to search!", "error");
         }
 
-        // If beginning starts with http, it's a youtube link. If not, append Karaoke
-        if (searchText.substring(0, 4) != "http") {
-            searchText += " + karaoke";
+        let modifiedSearchText = searchText;
+
+        // If string contains ?si=, remove it.
+        if (modifiedSearchText.includes("?si=")) {
+            modifiedSearchText = modifiedSearchText.split("?si=")[0]
         }
 
-        yt.searchByKeyword(searchText, 8, (results) => {
+        // If beginning starts with http, it's a youtube link. If not, append Karaoke
+        if (modifiedSearchText.substring(0, 4) != "http") {
+            modifiedSearchText += " + karaoke";
+        }
+
+        yt.searchByKeyword(modifiedSearchText, 8, (results) => {
             if (results != null && results.length > 0) {
                 setSearchResults(results);
             }

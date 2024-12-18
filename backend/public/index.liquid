@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap.css">
+    <link rel="stylesheet" href="/index.css">
+</head>
+
+<body class="p-2">
+    <div class="container text-center">
+
+        <div class="py-5 bg-success text-light rounded">
+            <h2>NOW PLAYING:</h2>
+            <h1 class="text-lg">
+                <b><u>{{ currentlyPlaying.title }}</u></b>
+            </h1>
+        </div>
+
+        <div>
+            <h4 class="text-muted py-4">Next in queue:</h4>
+            <ol class="text-lg w-100 m-auto">
+                {% for song in queue %}
+                <li>
+                    {{ song.title }}
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+
+        <!-- <div>
+            <button id="button">
+                Add Song
+            </button>
+            <script>
+                document.getElementById("button").onclick = () => {
+                    fetch("/play", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            title: "15 Second Drone video",
+                            url: "https://www.youtube.com/watch?v=9em32dDnTck"
+                        })
+                    });
+                };
+            </script>
+        </div> -->
+    </div>
+
+    <script>
+        // To update queues and now playing
+        setTimeout(() => { location.reload() }, 5000);
+    </script>
+</body>
+
+</html>

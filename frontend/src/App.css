@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,700;1,400&display=swap');
+
+html, body {
+  font-family: Nunito;
+  margin: 0;
+  height: 100%;
+  min-height:100%;
+  overflow: hidden; 
+}
+
+div#root, div.App {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+header, footer {
+  flex: 0 0 auto;
+}
+
+main {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1em;
+  text-align: center;
+}
+
+/* Search Page */
+div.dropdown-menu {
+  max-width: 90vw;
+}
